@@ -2,6 +2,7 @@ package com.example.not_decided;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.content.Intent;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         SUActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SignUpActivity.class));
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
             }
         });
     }

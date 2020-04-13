@@ -3,6 +3,7 @@ package com.example.not_decided;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
@@ -67,7 +68,7 @@ public class SignUpActivity extends AppCompatActivity {
                             Toast.makeText(SignUpActivity.this, "Authentication failed." + task.getException(),
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+                            startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
                             finish();
                         }
                     }
