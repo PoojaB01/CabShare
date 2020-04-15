@@ -19,17 +19,22 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
-
+    private Button bu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button SUActivity = (Button) findViewById(R.id.button_signupactivity);
-        SUActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        bu=(Button)findViewById(R.id.bu1);
+        onclick();
             }
-        });
-    }
-}
+            void onclick(){
+                bu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(MainActivity.this, FormAct.class));
+                    }
+                });
+            }
+
+
+        };
