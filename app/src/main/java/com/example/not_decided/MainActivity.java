@@ -28,8 +28,23 @@ public class MainActivity extends AppCompatActivity {
         SUActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, SignUpActivity.class));
+            }
+        });
+        Button LIActivity = (Button) findViewById(R.id.button_loginactivity);
+        LIActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
             }
         });
+        Button RPActivity = (Button) findViewById(R.id.button_rp);
+        RPActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, Reset_Password.class));
+            }
+        });
+
     }
 }
