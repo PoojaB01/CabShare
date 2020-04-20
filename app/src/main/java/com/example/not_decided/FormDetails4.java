@@ -1,20 +1,20 @@
 package com.example.not_decided;
 
-public class FormDetails1 {
+public class FormDetails4 {
     String id;
     String date;
     String time;
-    String flight;
-    public FormDetails1(){
+    String other;
+    public FormDetails4(){
 
     }
 
-    public FormDetails1(String id, String time, String date, String flight) {
+    public FormDetails4(String id, String time, String date, String other) {
 
         this.time = time;
         this.id = id;
         this.date = date;
-        this.flight = flight;
+        this.other = other;
     }
     public String getTime() {
         return time;
@@ -24,8 +24,8 @@ public class FormDetails1 {
         return date;
     }
 
-    public String getFlight() {
-        return flight;
+    public String getOther() {
+        return other;
     }
     public String getId() {
         return id;
