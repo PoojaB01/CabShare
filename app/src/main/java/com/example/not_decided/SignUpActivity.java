@@ -108,36 +108,26 @@ public class SignUpActivity extends AppCompatActivity {
                             Toast.makeText(SignUpActivity.this, "Authentication failed." + task.getException(),
                                     Toast.LENGTH_SHORT).show();
                         } else {
+                            String name = inputName.getText().toString().trim();
+                            String phone  = inputPhone.getText().toString().trim();
+                            String department = inputDepartment.getText().toString().trim();
+                            String hostel_name = hostel.getSelectedItem().toString();
+
+                            User_information userinfo = new User_information(name,phone,hostel_name,department);
+
+
+                            databaseReference = FirebaseDatabase.getInstance().getReference();
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            firebaseStorage = FirebaseStorage.getInstance();
+                            storageReference = firebaseStorage.getReference();
+                            databaseReference = databaseReference.child("Users");
+                            databaseReference.child(user.getUid()).setValue(userinfo);
 
                             startActivity(new Intent(SignUpActivity.this, HomeActivity.class));
                             finish();
                         }
                     }
                 });
-
-//                auth1.signInWithEmailAndPassword(email,password).addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if(!task.isSuccessful()){
-//                            Toast.makeText(SignUpActivity.this, "Failed" , Toast.LENGTH_SHORT).show();
-//                        }
-//                        else {
-//                            String name = inputName.getText().toString().trim();
-//                            String phone  = inputPhone.getText().toString().trim();
-//                            String department = inputDepartment.getText().toString().trim();
-//                            String hostel_name = hostel.getSelectedItem().toString();
-//
-//                            User_information userinfo = new User_information(name,phone,hostel_name,department);
-//
-//
-//                            databaseReference = FirebaseDatabase.getInstance().getReference();
-//                            FirebaseUser user = firebaseAuth.getCurrentUser();
-//                            firebaseStorage = FirebaseStorage.getInstance();
-//                            storageReference = firebaseStorage.getReference();
-//                            databaseReference.child(user.getUid()).setValue(userinfo);
-//                        }
-//                    }
-//                });
             }
         });
 
