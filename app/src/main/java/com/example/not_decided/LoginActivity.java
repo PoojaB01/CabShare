@@ -32,38 +32,40 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
-    private Button b1,b2;
-    private EditText email1,password1;
-    private   FirebaseAuth auth;
+    private Button b1, b2;
+    private EditText email1, password1;
+    private FirebaseAuth auth;
     public static final String EXTRA_MESSAGE =
             "com.example.android.LoginActivity.extra.MESSAGE";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
-        FirebaseAuth auth = FirebaseAuth.getInstance();
+        b1 = (Button) findViewById(R.id.button);
+        b2 = (Button) findViewById(R.id.button2);
+        auth = FirebaseAuth.getInstance();
+        email1 = (EditText) findViewById(R.id.editText1);
+        password1 = (EditText) findViewById(R.id.editText2);
+        auth = FirebaseAuth.getInstance();
         todoclick();
     }
-    public void todoclick(){
-        b1=(Button)findViewById(R.id.button);
-        b2=(Button)findViewById(R.id.button2);
-        auth=FirebaseAuth.getInstance();
-        email1 = (EditText) findViewById(R.id.editText1);
-        password1 =(EditText) findViewById(R.id.editText2);
 
+    public void todoclick() {
         b2.setOnClickListener(new View.OnClickListener() {
-                                  @Override
-                                  public void onClick(View view) {
+            @Override
+            public void onClick(View view) {
 
-                                      Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-                                      startActivity(intent);
-                                  }
-                              });
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(intent);
+            }
+        });
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String email = email1.getText().toString();
-                 final String password = password1.getText().toString();
+                final String password = password1.getText().toString();
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(getApplicationContext(), "Enter your mail address", Toast.LENGTH_SHORT).show();
                     return;
@@ -77,12 +79,16 @@ public class LoginActivity extends AppCompatActivity {
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
+                                // If sign in fails, display a message to the user. If sign in succeeds
+                                // the auth state listener will be notified and logic to handle the
+                                // signed in user can be handled in the listener.
+                                //progressBar.setVisibility(View.GONE);
                                 if (!task.isSuccessful()) {
                                     // there was an error
                                     if (password.length() < 6) {
-                                        Toast.makeText(getApplicationContext(),"Aapke gupt shabd 6 digit se bada rakhiye",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(LoginActivity.this, "Password length should be greater than 6", Toast.LENGTH_LONG).show();
                                     } else {
-                                        Toast.makeText(getApplicationContext(),"Pehle Login Kijiye",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(LoginActivity.this, "please sign up first", Toast.LENGTH_LONG).show();
                                     }
                                 } else {
                                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
@@ -93,9 +99,5 @@ public class LoginActivity extends AppCompatActivity {
                         });
             }
         });
-
-
-
     }
 }
-
