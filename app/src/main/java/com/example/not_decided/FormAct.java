@@ -35,7 +35,7 @@ public class FormAct extends AppCompatActivity implements TimePickerDialog.OnTim
     private DatabaseReference d1;
     private DatabaseReference d2,d3;
     private String text,s1,s2,s3,s4,s5,s6,s7;
-    private Button b2,b3;
+    private Button b2,b3,b4;
     private Spinner myspinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +55,16 @@ public class FormAct extends AppCompatActivity implements TimePickerDialog.OnTim
         b1=(Button)findViewById(R.id.button4);
         b2=(Button)findViewById(R.id.button3) ;
         b3=(Button)findViewById(R.id.button5);
+        b4=(Button)findViewById(R.id.button11);
         onclick();
     }
     void onclick(){
+        b4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(FormAct.this, HomeActivity.class));
+            }
+        });
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
