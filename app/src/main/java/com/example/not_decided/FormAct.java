@@ -1,5 +1,6 @@
 package com.example.not_decided;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
@@ -8,6 +9,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,6 +20,16 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -26,9 +38,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import com.google.android.libraries.places.api.Places;
 
 import java.text.DateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
+
 public class FormAct extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener{
     private Button b1;
     private EditText name1,flight,date,time,ex;
@@ -37,9 +53,19 @@ public class FormAct extends AppCompatActivity implements TimePickerDialog.OnTim
     private String text,s1,s2,s3,s4,s5,s6,s7;
     private Button b2,b3,b4;
     private Spinner myspinner;
+    final int AUTOCOMPLETE_REQUEST_CODE = 1;
+    PlacesClient placesClient;
+
+    TextView source;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Places.initialize(getApplicationContext(), "AIzaSyB7KKGTJJbTyGx4O5vgJgrvPvkr3z-brg0");
+        PlacesClient placesClient = Places.createClient(this);
+
+
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_form);
         d1= FirebaseDatabase.getInstance().getReference("Flight Trips");
         d2= FirebaseDatabase.getInstance().getReference("Railway Trips");
@@ -56,9 +82,29 @@ public class FormAct extends AppCompatActivity implements TimePickerDialog.OnTim
         b2=(Button)findViewById(R.id.button3) ;
         b3=(Button)findViewById(R.id.button5);
         b4=(Button)findViewById(R.id.button11);
+        Button select_source = (Button) findViewById(R.id.button_source);
+        source = (TextView) findViewById(R.id.source);
+        // Set the fields to specify which types of place data to return.
+        List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
+
+        // Start the autocomplete intent.
+        final Intent intent = new Autocomplete.IntentBuilder(
+                AutocompleteActivityMode.FULLSCREEN, fields)
+                .build(this);
+        select_source.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
+            }
+        });
+
         onclick();
     }
+
+
     void onclick(){
+
         b4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,5 +184,23 @@ public class FormAct extends AppCompatActivity implements TimePickerDialog.OnTim
         s7=s6+"/"+s5+"/"+s4;
         textView.setText(currentDateString);
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = Autocomplete.getPlaceFromIntent(data);
+                source.setText("Place: " + place.getName() + ", " + place.getId());
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                // TODO: Handle the error.
+                Status status = Autocomplete.getStatusFromIntent(data);
+                source.setText(status.getStatusMessage());
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
+        }
+    }
+
+
 
 }

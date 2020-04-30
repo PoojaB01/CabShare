@@ -48,11 +48,27 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        Button chat = (Button) findViewById(R.id.button_chat);
+        chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity.this, ChatActivity.class));
+            }
+        });
+
         Button b1 = (Button) findViewById(R.id.button6);
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(HomeActivity.this, ProfilePage.class));
+            }
+        });
+
+        Button maps = (Button) findViewById(R.id.maps);
+        maps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity.this, MapsActivity.class));
             }
         });
 

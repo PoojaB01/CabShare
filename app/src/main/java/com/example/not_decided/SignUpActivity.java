@@ -75,7 +75,7 @@ public class SignUpActivity extends AppCompatActivity {
         SUbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = inputEmail.getText().toString().trim();
+                final String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
                 String c_password = confirmPassword.getText().toString().trim();
 
@@ -113,7 +113,7 @@ public class SignUpActivity extends AppCompatActivity {
                             String department = inputDepartment.getText().toString().trim();
                             String hostel_name = hostel.getSelectedItem().toString();
 
-                            User_information userinfo = new User_information(name,phone,hostel_name,department);
+                            User_information userinfo = new User_information(name,phone,hostel_name,department, email);
 
 
                             databaseReference = FirebaseDatabase.getInstance().getReference();

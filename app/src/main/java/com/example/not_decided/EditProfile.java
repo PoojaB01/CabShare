@@ -21,7 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 public class EditProfile extends AppCompatActivity {
     DatabaseReference ref;
     FirebaseUser user;
-    String name1,hostel1,phone1,department1;
+    String name1,hostel1,phone1,department1,email;
     String uid;
     String name2,hostel2,department2,phone2;
     EditText t1,t2,t3,t4;
@@ -45,6 +45,7 @@ public class EditProfile extends AppCompatActivity {
                  hostel1 = dataSnapshot.child("hostel").getValue().toString();
                  phone1 = dataSnapshot.child("phone").getValue().toString();
                  department1 = dataSnapshot.child("department").getValue().toString();
+                 email = dataSnapshot.child("email").getValue().toString();
             }
 
             @Override
@@ -82,7 +83,7 @@ public class EditProfile extends AppCompatActivity {
                 {
                     hostel2=hostel1;
                 }
-                User_information user1=new User_information(name2,phone2,hostel2,department2);
+                User_information user1=new User_information(name2,phone2,hostel2,department2,email);
 
                 ref.setValue(user1);
 
