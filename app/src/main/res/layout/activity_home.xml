@@ -58,15 +58,26 @@
         app:layout_constraintVertical_bias="0.72" />
 
     <Button
-        android:id="@+id/button_logout"
+        android:id="@+id/button12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="56dp"
-        android:text="Logout"
-        app:layout_constraintBottom_toTopOf="@+id/button6"
+        android:text="Previous Trips"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.792"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.848"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.563" />
+
+    <Button
+    android:id="@+id/button_logout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+        android:text="Logout"
+    app:layout_constraintBottom_toTopOf="@+id/button6"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.25"
+    app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button_chat"
@@ -91,6 +102,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/nav_host_fragment"
         app:layout_constraintVertical_bias="0.327" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,6 +35,7 @@
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"></activity>
         <activity android:name=".ChatActivity" />
+        <activity android:name=".TripDetails"></activity>
         <activity android:name=".EditProfile" />
         <activity android:name=".ProfilePage" />
         <activity
