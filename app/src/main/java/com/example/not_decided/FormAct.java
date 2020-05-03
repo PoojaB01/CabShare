@@ -1,5 +1,6 @@
 package com.example.not_decided;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
@@ -31,6 +32,9 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import android.os.Bundle;
@@ -39,6 +43,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import com.google.android.libraries.places.api.Places;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.util.Arrays;
@@ -47,58 +52,31 @@ import java.util.List;
 
 public class FormAct extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener{
     private Button b1;
-    private EditText name1,flight,date,time,ex;
+    private EditText source,destination;
     private DatabaseReference d1;
     private DatabaseReference d2,d3;
-    private String text,s1,s2,s3,s4,s5,s6,s7;
+    private String text,s1,s2,s3,s4,s5,s6,s7,email1,phone1;
     private Button b2,b3,b4;
-    private Spinner myspinner;
-    final int AUTOCOMPLETE_REQUEST_CODE = 1;
-    PlacesClient placesClient;
-
-    TextView source;
+    FirebaseUser user;
+    DatabaseReference ref;
+    String uid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Places.initialize(getApplicationContext(), "AIzaSyB7KKGTJJbTyGx4O5vgJgrvPvkr3z-brg0");
-        PlacesClient placesClient = Places.createClient(this);
 
 
 
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_form);
-        d1= FirebaseDatabase.getInstance().getReference("Flight Trips");
-        d2= FirebaseDatabase.getInstance().getReference("Railway Trips");
-        d3= FirebaseDatabase.getInstance().getReference("Other Trips");
-        flight=(EditText)findViewById(R.id.e2);
+        d1= FirebaseDatabase.getInstance().getReference("Trips");
+        source=(EditText)findViewById(R.id.editText2);
+        destination=(EditText)findViewById(R.id.editText1);
         //date=(EditText)findViewById(R.id.e3);
         //time=(EditText)findViewById(R.id.e4);
-        myspinner= (Spinner)findViewById(R.id.spinner1);
-        ArrayAdapter<String> myadapter =new ArrayAdapter<String>(FormAct.this,android.R.layout.simple_expandable_list_item_1,getResources().getStringArray(R.array.place));
-        myadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        myspinner.setAdapter(myadapter);
 
         b1=(Button)findViewById(R.id.button4);
         b2=(Button)findViewById(R.id.button3) ;
         b3=(Button)findViewById(R.id.button5);
         b4=(Button)findViewById(R.id.button11);
-        Button select_source = (Button) findViewById(R.id.button_source);
-        source = (TextView) findViewById(R.id.source);
-        // Set the fields to specify which types of place data to return.
-        List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
-
-        // Start the autocomplete intent.
-        final Intent intent = new Autocomplete.IntentBuilder(
-                AutocompleteActivityMode.FULLSCREEN, fields)
-                .build(this);
-        select_source.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
-            }
-        });
-
         onclick();
     }
 
@@ -115,34 +93,39 @@ public class FormAct extends AppCompatActivity implements TimePickerDialog.OnTim
             @Override
             public void onClick(View v) {
 
-                String flight1=flight.getText().toString().trim();
+                String source1=source.getText().toString().trim();
+                String destination1=source.getText().toString().trim();
                 String date1=s7;
                 String time1=s3;
-                String text = myspinner.getSelectedItem().toString();
-                if(TextUtils.isEmpty(flight1) || TextUtils.isEmpty(date1) || TextUtils.isEmpty(time1) )
+                if(TextUtils.isEmpty(source1) || TextUtils.isEmpty(date1) || TextUtils.isEmpty(time1) || TextUtils.isEmpty(destination1) )
                 {
                     Toast.makeText(getApplicationContext(), "Please Fill up all the Details", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
-                    if(text.equals("Airport")) {
+
                         String x = d1.push().getKey();
-                        FormDetails1 form1 = new FormDetails1(x, time1, date1, flight1);
+
+                    user= FirebaseAuth.getInstance().getCurrentUser();
+                    uid=user.getUid();
+                    ref = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
+                    ref.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                             email1 = dataSnapshot.child("email").getValue().toString();
+                             phone1 = dataSnapshot.child("phone").getValue().toString();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                        Trip_information form1 = new Trip_information(destination1, source1, s3,s7,email1,phone1,uid);
                         d1.child(x).setValue(form1);
                         Toast.makeText(getApplicationContext(), "You would be informed soon with the help of email", Toast.LENGTH_SHORT).show();
-                    }
-                    else if(text.equals("Railwaystation")){
-                        String x = d2.push().getKey();
-                        FormDetails2 form1 = new FormDetails2(x, time1, date1, flight1);
-                        d2.child(x).setValue(form1);
-                        Toast.makeText(getApplicationContext(), "You would be informed soon with the help of email", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        String x = d3.push().getKey();
-                        FormDetails4 form1 = new FormDetails4(x, time1, date1, flight1);
-                        d3.child(x).setValue(form1);
-                        Toast.makeText(getApplicationContext(), "You would be informed soon with the help of email", Toast.LENGTH_SHORT).show();
-                    }
+
                 }
             }
         });
@@ -184,7 +167,7 @@ public class FormAct extends AppCompatActivity implements TimePickerDialog.OnTim
         s7=s6+"/"+s5+"/"+s4;
         textView.setText(currentDateString);
     }
-    @Override
+   /* @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
@@ -192,14 +175,14 @@ public class FormAct extends AppCompatActivity implements TimePickerDialog.OnTim
                 Place place = Autocomplete.getPlaceFromIntent(data);
                 source.setText("Place: " + place.getName() + ", " + place.getId());
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-                // TODO: Handle the error.
+
                 Status status = Autocomplete.getStatusFromIntent(data);
                 source.setText(status.getStatusMessage());
             } else if (resultCode == RESULT_CANCELED) {
                 // The user canceled the operation.
             }
         }
-    }
+    }*/
 
 
 
