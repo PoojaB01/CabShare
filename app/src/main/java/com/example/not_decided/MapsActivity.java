@@ -30,7 +30,7 @@ import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import java.util.Arrays;
 import java.util.List;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class  MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     Button pick;
@@ -49,12 +49,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
         pick = (Button) findViewById(R.id.pick_source);
-        source = (TextView) findViewById(R.id.source);
 //
         // Initialize Places.
         Places.initialize(getApplicationContext(), "AIzaSyB7KKGTJJbTyGx4O5vgJgrvPvkr3z-brg0");
         fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
-
         // Create a new Places client instance.
         PlacesClient placesClient = Places.createClient(this);
         pick.setOnClickListener(new View.OnClickListener() {
@@ -88,17 +86,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
     }
-
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+    
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
