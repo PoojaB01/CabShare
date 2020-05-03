@@ -8,8 +8,7 @@ public class Trip_information {
     String email;
     String phone;
     String id;
-    public Trip_information(){
-    }
+
 
     public Trip_information(String destination,String source,String time, String date,String email,String phone,String id) {
         this.destination=destination;
