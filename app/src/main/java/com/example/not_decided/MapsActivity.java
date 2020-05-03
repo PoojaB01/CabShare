@@ -86,7 +86,7 @@ public class  MapsActivity extends FragmentActivity implements OnMapReadyCallbac
         });
 
     }
-    
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
