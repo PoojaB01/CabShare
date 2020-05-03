@@ -43,9 +43,9 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     @Override
     public void onBindViewHolder(@NonNull TripViewHolder holder, int position) {
         Trip_information trip = mtriplist.get(position);
-        holder.name.setText(trip.getname());
+        holder.name.setText(trip.getName());
         holder.time.setText(trip.getTime() +" "+trip.getDate());
-        holder.email.setText(trip.getemail());
+        holder.email.setText(trip.getEmail());
         holder.phone.setText(trip.getPhone());
         holder.path.setText(trip.getSource()+" -> "+trip.getDestination());
 

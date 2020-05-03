@@ -4,7 +4,9 @@ import java.util.Date;
 public class Message {
     String sender_id, receiver_id, message_text;
     String date;
+    public Message() {
 
+    }
     public Message(String sender_id, String receiver_id, String message_text, String date)
     {
         this.sender_id = sender_id;

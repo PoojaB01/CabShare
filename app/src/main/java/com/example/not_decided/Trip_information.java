@@ -10,6 +10,10 @@ public class Trip_information {
     String phone;
     String id;
 
+    public Trip_information()
+    {
+
+    }
 
     public Trip_information(String destination,String source,String time, String date, String name, String email,String phone,String id) {
         this.destination = destination;
@@ -30,7 +34,7 @@ public class Trip_information {
     public String getSource() {
         return source;
     }
-    public String getid() {
+    public String getId() {
         return id;
     }
     public String getDestination() {
@@ -39,9 +43,9 @@ public class Trip_information {
     public String getPhone() {
         return phone;
     }
-    public String getemail() {
+    public String getEmail() {
         return email;
     }
-    public String getname() { return name; }
+    public String getName() { return name; }
 
 }

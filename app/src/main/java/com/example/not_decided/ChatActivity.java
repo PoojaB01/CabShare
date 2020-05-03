@@ -52,9 +52,9 @@ public class ChatActivity extends AppCompatActivity implements Message_Dialog.Me
     }
 
     @Override
-    public void applyTexts(String email, String message) {
+    public void applyTexts(final String email, final String message) {
         FirebaseUser user;
-        Date date;
+        final Date date;
         user = FirebaseAuth.getInstance().getCurrentUser();
         sender = user.getUid();
         date = new Date();
@@ -63,6 +63,7 @@ public class ChatActivity extends AppCompatActivity implements Message_Dialog.Me
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 sender = dataSnapshot.child("email").getValue().toString();
+                writeMessage(sender, email, message, date);
             }
 
             @Override
@@ -71,16 +72,15 @@ public class ChatActivity extends AppCompatActivity implements Message_Dialog.Me
             }
         });
 
+
+
+    }
+    public void writeMessage(String sender, String email, String message, Date date) {
         Message M = new Message(sender, email, message, date.toString());
-
-        ref = FirebaseDatabase.getInstance().getReference().child("Chats").child(sender + " & " + email);
-
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Chats");
         String key = ref.push().getKey();
-
         ref.child(key).setValue(M);
-
         Toast.makeText(ChatActivity.this, "Message Sent",
                 Toast.LENGTH_SHORT).show();
-
     }
 }
