@@ -63,11 +63,11 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(new Intent(HomeActivity.this, ProfilePage.class));
             }
         });
-        Button view_trip=(Button)findViewById(R.id.button12);
+        Button view_trip=(Button)findViewById(R.id.upcoming_trips);
         view_trip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(HomeActivity.this, TripDetails.class));
+                startActivity(new Intent(HomeActivity.this, UpcomingTrips.class));
             }
         });
 
