@@ -118,10 +118,6 @@ public class FormAct extends AppCompatActivity implements TimePickerDialog.OnTim
                              Trip_information form1 = new Trip_information(destination1, source1, s3,s7,name1,email1,phone1,uid);
                              d1.child(x).setValue(form1);
                              Toast.makeText(getApplicationContext(), "You would be informed soon with the help of email", Toast.LENGTH_SHORT).show();
-<<<<<<< HEAD
-
-=======
->>>>>>> 13da2126cb7e6201a2f3db377529016445694d82
                         }
 
                         @Override
@@ -129,10 +125,6 @@ public class FormAct extends AppCompatActivity implements TimePickerDialog.OnTim
 
                         }
                     });
-<<<<<<< HEAD
-=======
-
->>>>>>> 13da2126cb7e6201a2f3db377529016445694d82
 
                 }
             }
