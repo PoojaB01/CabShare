@@ -47,8 +47,4 @@ public class Trip_information {
         return email;
     }
     public String getName() { return name; }
-<<<<<<< HEAD
-=======
-
->>>>>>> 13da2126cb7e6201a2f3db377529016445694d82
 }

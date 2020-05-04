@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NearbyTrips"></activity>
+        <activity android:name=".MapsActivity"></activity>
+        <activity android:name=".NearbyTrips" />
         <activity android:name=".UpcomingTrips" />
         <activity android:name=".Trip_information" />
         <!--
@@ -32,9 +33,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps" />
         <activity android:name=".ChatActivity" />
         <activity android:name=".TripDetails" />
         <activity android:name=".EditProfile" />
