@@ -94,7 +94,7 @@ public class FormAct extends AppCompatActivity implements TimePickerDialog.OnTim
             public void onClick(View v) {
 
                 final String source1=source.getText().toString().trim();
-                final String destination1=source.getText().toString().trim();
+                final String destination1=destination.getText().toString().trim();
                 String date1=s7;
                 String time1=s3;
                 if(TextUtils.isEmpty(source1) || TextUtils.isEmpty(date1) || TextUtils.isEmpty(time1) || TextUtils.isEmpty(destination1) )
@@ -114,14 +114,11 @@ public class FormAct extends AppCompatActivity implements TimePickerDialog.OnTim
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                              email1 = dataSnapshot.child("email").getValue().toString();
                              phone1 = dataSnapshot.child("phone").getValue().toString();
-<<<<<<< HEAD
-
-=======
                              name1 = dataSnapshot.child("name").getValue().toString();
                              Trip_information form1 = new Trip_information(destination1, source1, s3,s7,name1,email1,phone1,uid);
                              d1.child(x).setValue(form1);
                              Toast.makeText(getApplicationContext(), "You would be informed soon with the help of email", Toast.LENGTH_SHORT).show();
->>>>>>> 7bf0fd0538c0dac80c98f53224b3f535c6f7f484
+
                         }
 
                         @Override
@@ -129,14 +126,6 @@ public class FormAct extends AppCompatActivity implements TimePickerDialog.OnTim
 
                         }
                     });
-                    Trip_information form1 = new Trip_information(destination1, source1, s3,s7,email1,phone1,uid);
-                    d1.child(x).setValue(form1);
-                    Toast.makeText(getApplicationContext(), "You would be informed soon with the help of email", Toast.LENGTH_SHORT).show();
-
-<<<<<<< HEAD
-=======
-
->>>>>>> 7bf0fd0538c0dac80c98f53224b3f535c6f7f484
 
                 }
             }

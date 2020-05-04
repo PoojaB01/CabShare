@@ -70,6 +70,13 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(new Intent(HomeActivity.this, UpcomingTrips.class));
             }
         });
+        Button near_trips=(Button)findViewById(R.id.neartrips);
+        near_trips.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity.this, NearbyTrips.class));
+            }
+        });
 
       /*  Button maps = (Button) findViewById(R.id.maps);
         maps.setOnClickListener(new View.OnClickListener() {

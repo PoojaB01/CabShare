@@ -17,9 +17,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UpcomingTrips"></activity>
-        <activity android:name=".Trip_information"></activity>
-        <activity android:name=".SearchAct" />
+        <activity android:name=".NearbyTrips"></activity>
+        <activity android:name=".UpcomingTrips" />
+        <activity android:name=".Trip_information" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

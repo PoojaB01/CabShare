@@ -1,14 +1,14 @@
 package com.example.not_decided;
 
 public class Trip_information {
-    String destination;
-    String source;
-    String date;
-    String time;
-    String name;
-    String email;
-    String phone;
-    String id;
+    public String destination;
+    public String source;
+    public String date;
+    public String time;
+    public String name;
+    public String email;
+    public String phone;
+    public String id;
 
 
     public Trip_information(String destination,String source,String time, String date, String name, String email,String phone,String id) {
@@ -30,7 +30,7 @@ public class Trip_information {
     public String getSource() {
         return source;
     }
-    public String getid() {
+    public String getId() {
         return id;
     }
     public String getDestination() {
@@ -39,9 +39,8 @@ public class Trip_information {
     public String getPhone() {
         return phone;
     }
-    public String getemail() {
+    public String getEmail() {
         return email;
     }
-    public String getname() { return name; }
-
+    public String getName() { return name; }
 }
