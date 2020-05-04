@@ -24,10 +24,19 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class ChatActivity extends AppCompatActivity implements Message_Dialog.Message_DialogListener {
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    DatabaseReference databaseReference;
+    ArrayList<Message> messageList = new ArrayList<>();
 
     String sender, receiver;
     @Override
@@ -41,7 +50,23 @@ public class ChatActivity extends AppCompatActivity implements Message_Dialog.Me
             public void onClick(View v) {
                 openDialog();
             }
+        });
 
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Chats");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
+                    Message message = messageSnapshot.getValue(Message.class);
+                    messageList.add(message);
+                }
+                makeView(messageList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
         });
 
     }
@@ -52,9 +77,9 @@ public class ChatActivity extends AppCompatActivity implements Message_Dialog.Me
     }
 
     @Override
-    public void applyTexts(String email, String message) {
+    public void applyTexts(final String email, final String message) {
         FirebaseUser user;
-        Date date;
+        final Date date;
         user = FirebaseAuth.getInstance().getCurrentUser();
         sender = user.getUid();
         date = new Date();
@@ -63,6 +88,7 @@ public class ChatActivity extends AppCompatActivity implements Message_Dialog.Me
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 sender = dataSnapshot.child("email").getValue().toString();
+                writeMessage(sender, email, message, date);
             }
 
             @Override
@@ -71,16 +97,24 @@ public class ChatActivity extends AppCompatActivity implements Message_Dialog.Me
             }
         });
 
+
+
+    }
+    public void writeMessage(String sender, String email, String message, Date date) {
         Message M = new Message(sender, email, message, date.toString());
-
-        ref = FirebaseDatabase.getInstance().getReference().child("Chats").child(sender + " & " + email);
-
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Chats");
         String key = ref.push().getKey();
-
         ref.child(key).setValue(M);
-
         Toast.makeText(ChatActivity.this, "Message Sent",
                 Toast.LENGTH_SHORT).show();
+    }
 
+    public void makeView(ArrayList<Message> messageList) {
+        mRecyclerView = findViewById(R.id.chats);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        mAdapter = new MessageAdapter(messageList);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
     }
 }

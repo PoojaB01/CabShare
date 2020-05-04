@@ -10,6 +10,10 @@ public class Trip_information {
     public String phone;
     public String id;
 
+    public Trip_information()
+    {
+
+    }
 
     public Trip_information(String destination,String source,String time, String date, String name, String email,String phone,String id) {
         this.destination = destination;
@@ -43,4 +47,8 @@ public class Trip_information {
         return email;
     }
     public String getName() { return name; }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 13da2126cb7e6201a2f3db377529016445694d82
 }
