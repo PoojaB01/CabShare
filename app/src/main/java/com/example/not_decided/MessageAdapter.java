@@ -6,17 +6,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
+public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> implements Filterable {
 
     private ArrayList<Message> messagelist;
+    private ArrayList<Message> messagesListCopy;
     private BtnClickListener mListener;
+
+
     public interface BtnClickListener {
         void onBtnClick(int position);
     }
@@ -43,6 +49,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     public MessageAdapter(ArrayList<Message> messageList, BtnClickListener listener) {
         messagelist = messageList;
         mListener = listener;
+        messagesListCopy = new ArrayList<>(messageList);
     }
 
     @NonNull
@@ -73,4 +80,42 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     public int getItemCount() {
         return messagelist.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return MessageFilter;
+    }
+
+    private Filter MessageFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Message> FilteredList = new ArrayList<>();
+            if(constraint == null || constraint.length() == 0)
+            {
+                FilteredList.addAll(messagesListCopy);
+            }
+            else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for( Message message : messagesListCopy)
+                {
+                    if(message.getReceiverName().toLowerCase().contains(filterPattern))
+                        FilteredList.add(message);
+                    else if(message.getSenderName().toLowerCase().contains(filterPattern))
+                        FilteredList.add(message);
+                    else if(message.getMessage().toLowerCase().contains(filterPattern))
+                        FilteredList.add(message);
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = FilteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            messagelist.clear();
+            messagelist.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 }

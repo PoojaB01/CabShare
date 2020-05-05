@@ -6,8 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -126,10 +130,10 @@ public class ChatActivity extends AppCompatActivity implements Message_Dialog.Me
         });
 
     }
-
+    private MessageAdapter mAdapter;
     public void makeView(final ArrayList<Message> messageList) {
         RecyclerView mRecyclerView;
-        RecyclerView.Adapter mAdapter;
+
         RecyclerView.LayoutManager mLayoutManager;
         mRecyclerView = findViewById(R.id.chats);
         mRecyclerView.setHasFixedSize(true);
@@ -160,5 +164,27 @@ public class ChatActivity extends AppCompatActivity implements Message_Dialog.Me
         ref.child(key).setValue(message);
         Toast.makeText(ChatActivity.this, "Message Sent",
                 Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.chatsearchmenu,menu);
+        MenuItem searchItem = menu.findItem(R.id.chat_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdapter.getFilter().filter(newText);
+                return true;
+            }
+        });
+        return true;
     }
 }
