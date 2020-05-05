@@ -112,6 +112,7 @@ public class SignUpActivity extends AppCompatActivity {
                             String phone  = inputPhone.getText().toString().trim();
                             String department = inputDepartment.getText().toString().trim();
                             String hostel_name = hostel.getSelectedItem().toString();
+                            String email1 = inputEmail.getText().toString().trim().replace('.','-');
 
                             User_information userinfo = new User_information(name,phone,hostel_name,department, email);
 
@@ -122,6 +123,8 @@ public class SignUpActivity extends AppCompatActivity {
                             storageReference = firebaseStorage.getReference();
                             databaseReference = databaseReference.child("Users");
                             databaseReference.child(user.getUid()).setValue(userinfo);
+                            databaseReference = FirebaseDatabase.getInstance().getReference().child("UserID");
+                            databaseReference.child(email1).setValue(user.getUid());
 
                             startActivity(new Intent(SignUpActivity.this, HomeActivity.class));
                             finish();

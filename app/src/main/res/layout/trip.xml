@@ -75,6 +75,14 @@
             android:layout_alignParentEnd="true"
             android:text="email" />
 
+        <Button
+            android:id="@+id/send_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/phone"
+            android:layout_marginTop="2dp"
+            android:text="Send Message" />
+
 
     </RelativeLayout>
 
