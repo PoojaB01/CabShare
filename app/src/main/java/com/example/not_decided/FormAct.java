@@ -127,7 +127,6 @@ public class FormAct extends AppCompatActivity implements TimePickerDialog.OnTim
                         }
                     });
 
-
                 }
             }
         });
