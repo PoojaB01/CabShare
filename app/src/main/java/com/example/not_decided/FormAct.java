@@ -117,8 +117,8 @@ public class FormAct extends AppCompatActivity implements TimePickerDialog.OnTim
                              name1 = dataSnapshot.child("name").getValue().toString();
                              Trip_information form1 = new Trip_information(destination1, source1, s3,s7,name1,email1,phone1,uid);
                              d1.child(x).setValue(form1);
-                             Toast.makeText(getApplicationContext(), "You would be informed soon with the help of email", Toast.LENGTH_SHORT).show();
-
+                             Toast.makeText(getApplicationContext(), "Trip added.", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(FormAct.this, HomeActivity.class));
                         }
 
                         @Override
