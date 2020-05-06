@@ -152,6 +152,10 @@ public class FormAct extends AppCompatActivity implements TimePickerDialog.OnTim
         textView.setText("Hour: " + hourOfDay + " Minute: " + minute);
          s1=String.valueOf(hourOfDay);
          s2=String.valueOf(minute);
+         if(s1.length()==1)
+         {
+             s1="0"+s1;
+         }
          s3=s1+":"+s2;
     }
     @Override

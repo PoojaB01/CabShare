@@ -19,22 +19,31 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import static com.example.not_decided.R.layout.list_layout;
 
-public class NearbyTrips extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener{
+public class NearbyTrips extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener,Message_reply.Message_replyListener{
 private EditText source,destination;
 private Button search;
 private RecyclerView result;
 private Button select_time,select_date;
 private TextView time,date;
-private DatabaseReference mTripDatabase;
+private boolean flag=false,flag1=false;
+    private RecyclerView.Adapter mAdapter;
+private DatabaseReference mTripDatabase,mTripDatabase1;
+    ArrayList<Trip_information> triplist = new ArrayList<>();
+    private RecyclerView.LayoutManager mLayoutManager;
 private String s1,s2,s3,s4,s5,s6,s7;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +58,22 @@ private String s1,s2,s3,s4,s5,s6,s7;
         search=(Button) findViewById(R.id.search);
         result=(RecyclerView)findViewById(R.id.new_trips);
         result.setHasFixedSize(true);
+        mTripDatabase1= FirebaseDatabase.getInstance().getReference("Trips");
+        mTripDatabase1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot tripSnapshot: dataSnapshot.getChildren()) {
+                    Trip_information trip = tripSnapshot.getValue(Trip_information.class);
+                    triplist.add(trip);
+                }
+                makeView(triplist);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         result.setLayoutManager(new LinearLayoutManager(this));
         mTripDatabase= FirebaseDatabase.getInstance().getReference("Trips");
         search.setOnClickListener(new View.OnClickListener() {
@@ -57,6 +82,7 @@ private String s1,s2,s3,s4,s5,s6,s7;
                 String searchSource=source.getText().toString();
                 String searchDestination=destination.getText().toString();
                 firebaseTripSearch(searchSource,searchDestination);
+                triplist.clear();
             }
         });
         select_time.setOnClickListener(new View.OnClickListener() {
@@ -74,46 +100,108 @@ private String s1,s2,s3,s4,s5,s6,s7;
             }
         });
     }
-    private void firebaseTripSearch(String searchSource,String searchDestination){
+    private void firebaseTripSearch(final String searchSource, final String searchDestination){
         Toast.makeText(NearbyTrips.this,"Started",Toast.LENGTH_LONG).show();
-        Query firebaseSearchQuery=mTripDatabase.orderByChild("source").startAt(searchSource).endAt(searchSource+"\uf8ff");
-        //Query firebaseSearchQuery1=firebaseSearchQuery.orderByChild("destination").startAt(searchDestination).endAt(searchDestination+"\uf8ff");
-        FirebaseRecyclerAdapter<Trip_information, TripsViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Trip_information, TripsViewHolder>(
-
-                Trip_information.class,
-                list_layout,
-                TripsViewHolder.class,
-                firebaseSearchQuery
-
-        ) {
+        mTripDatabase.addValueEventListener(new ValueEventListener() {
             @Override
-            protected void populateViewHolder(TripsViewHolder tripsViewHolder, Trip_information trip_information, int i) {
-                    tripsViewHolder.setDetails(getApplicationContext(),trip_information.getName(),trip_information.getPhone(),trip_information.getEmail(),trip_information.getSource()+" -> "+trip_information.getDestination(),trip_information.getTime() +" "+trip_information.getDate());
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot tripSnapshot: dataSnapshot.getChildren()) {
+                    String input1 = tripSnapshot.getValue(Trip_information.class).getSource().toLowerCase();
+                    boolean isFound1 = input1.indexOf(searchSource.toLowerCase()) !=-1? true: false;
+                    String input2 = tripSnapshot.getValue(Trip_information.class).getDestination().toLowerCase();
+                    boolean isFound2 = input2.indexOf(searchDestination.toLowerCase()) !=-1? true: false;
+                    String input3 = tripSnapshot.getValue(Trip_information.class).getDate();
+
+                    String input4= tripSnapshot.getValue(Trip_information.class).getTime();
+                    boolean isFound4=flag;
+                    if(isFound4 && flag1) {
+                        String x=input4.substring(0,2);
+                        int y=Integer.parseInt(x);
+                        String z1=s3.substring(0,2);
+                        int z=Integer.parseInt(z1);
+                        boolean isFound3 = input3.equals(s7);
+                        if (isFound1 && isFound2 && isFound3 && (y == z || y == z - 1 || y == z + 1 || y == z + 2 || y == z - 2 )) {
+                            Trip_information trip = tripSnapshot.getValue(Trip_information.class);
+                            triplist.add(trip);
+                        }
+                    }
+                    else if(!isFound4 && flag1)
+                    {
+                        boolean isFound3 = input3.equals(s7);
+                        if (isFound1 && isFound2 && isFound3 ) {
+                        Trip_information trip = tripSnapshot.getValue(Trip_information.class);
+                        triplist.add(trip);
+                        }
+                    }
+                    else if(isFound4 && !flag1)
+                    {
+                        String x=input4.substring(0,2);
+                        int y=Integer.parseInt(x);
+                        String z1=s3.substring(0,2);
+                        int z=Integer.parseInt(z1);
+                        if (isFound1 && isFound2 && (y == z || y == z - 1 || y == z + 1 || y == z + 2 || y == z - 2 )) {
+                            Trip_information trip = tripSnapshot.getValue(Trip_information.class);
+                            triplist.add(trip);
+                        }
+                    }
+                    else
+                    {
+                        if (isFound1 && isFound2) {
+                            Trip_information trip = tripSnapshot.getValue(Trip_information.class);
+                            triplist.add(trip);
+                        }
+                    }
+                }
+                makeView(triplist);
             }
-        };
-        result.setAdapter(firebaseRecyclerAdapter);
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
-    public  static class TripsViewHolder extends RecyclerView.ViewHolder{
-        View mView;
+    public void makeView(final ArrayList<Trip_information> triplist) {
+        result = findViewById(R.id.new_trips);
+        result.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        TripAdapter.BtnClickListener listener = new TripAdapter.BtnClickListener() {
+            @Override
+            public void onBtnClick(int position) {
+                final Trip_information trip = triplist.get(position);
 
-        public TripsViewHolder(@NonNull View itemView) {
-            super(itemView);
-            mView= itemView;
-        }
+                DatabaseReference ref;
+                final String UID = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+                ref = FirebaseDatabase.getInstance().getReference().child("Users").child(UID);
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String name = dataSnapshot.child("name").getValue().toString();
+                        Message_reply dialog;
+                        dialog = new Message_reply(trip.getName(), new Message(UID, trip.getId(), "", "", name, trip.getName()));
+                        dialog.show(getSupportFragmentManager(), "message");
+                    }
 
-        public void setDetails(Context ctx, String name1, String phone1, String email1,String path1,String date1) {
-            TextView name2=(TextView)mView.findViewById(R.id.name);
-            TextView phone2=(TextView)mView.findViewById(R.id.phone);
-            TextView email2=(TextView)mView.findViewById(R.id.email);
-            TextView path2=(TextView)mView.findViewById(R.id.path);
-            TextView time2=(TextView)mView.findViewById(R.id.date);
-            name2.setText(name1);
-            phone2.setText(phone1);
-            email2.setText(email1);
-            path2.setText(path1);
-            time2.setText(date1);
-        }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        };
+        mAdapter = new TripAdapter(triplist, listener);
+        result.setLayoutManager(mLayoutManager);
+        result.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void applyTextsReply(Message message) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Chats");
+        String key = ref.push().getKey();
+        ref.child(key).setValue(message);
+        Toast.makeText(NearbyTrips.this, "Message Sent",
+                Toast.LENGTH_SHORT).show();
     }
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -121,6 +209,11 @@ private String s1,s2,s3,s4,s5,s6,s7;
         time.setText("Hour: " + hourOfDay + " Minute: " + minute);
         s1=String.valueOf(hourOfDay);
         s2=String.valueOf(minute);
+        if(s1.length()==1)
+        {
+            s1="0"+s1;
+        }
+        flag=true;
         s3=s1+":"+s2;
     }
     @Override
@@ -134,6 +227,7 @@ private String s1,s2,s3,s4,s5,s6,s7;
         s4=String.valueOf(year);
         s5=String.valueOf(month);
         s6=String.valueOf(dayOfMonth);
+        flag1=true;
         s7=s6+"/"+s5+"/"+s4;
         date.setText(currentDateString);
     }
