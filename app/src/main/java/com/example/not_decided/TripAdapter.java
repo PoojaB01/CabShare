@@ -1,14 +1,21 @@
 package com.example.not_decided;
 
 import android.annotation.SuppressLint;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -25,6 +32,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         public TextView name, email, time, phone, path;
         public Button send_message;
         public BtnClickListener mClickListener;
+        public ImageView profileImageView;
+
 
         public TripViewHolder(@NonNull View itemView, BtnClickListener listener) {
             super(itemView);
@@ -34,6 +43,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
             time = itemView.findViewById(R.id.date);
             path = itemView.findViewById(R.id.path);
             send_message = itemView.findViewById(R.id.send_message);
+            profileImageView = itemView.findViewById(R.id.picture);
             mClickListener = listener;
         }
     }
@@ -65,6 +75,17 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
             public void onClick(View v) {
                 if(holder.mClickListener != null)
                     holder.mClickListener.onBtnClick(position);
+            }
+        });
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference storageReference = firebaseStorage.getReference();
+        storageReference.child(trip.getId()).child("Images").child("ProfilePicture.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // Using "Picasso" (http://square.github.io/picasso/) after adding the dependency in the Gradle.
+                // ".fit().centerInside()" fits the entire image into the specified area.
+                // Finally, add "READ" and "WRITE" external storage permissions in the Manifest.
+                Picasso.get().load(uri).fit().centerInside().into(holder.profileImageView);
             }
         });
 

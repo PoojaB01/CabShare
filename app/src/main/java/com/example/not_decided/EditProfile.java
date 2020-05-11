@@ -7,8 +7,13 @@ import androidx.appcompat.view.ActionMode;
 
 import android.content.ContentResolver;
 import android.content.Intent;
+<<<<<<< HEAD
+=======
+import android.graphics.Bitmap;
+>>>>>>> 00d45d7a66cd3b4cab006ebf9365da29b4ffc352
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -16,6 +21,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,8 +32,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+<<<<<<< HEAD
 
 import java.io.File;
+=======
+import com.google.firebase.storage.UploadTask;
+
+import java.io.IOException;
+import java.util.Objects;
+>>>>>>> 00d45d7a66cd3b4cab006ebf9365da29b4ffc352
 
 public class EditProfile extends AppCompatActivity {
     DatabaseReference ref;
@@ -36,6 +50,25 @@ public class EditProfile extends AppCompatActivity {
     String name2,hostel2,department2,phone2;
 
     EditText t1,t2,t3,t4;
+    ImageView profileImageView;
+    private static int PICK_IMAGE = 123;
+    Uri imagePath;
+    FirebaseAuth firebaseAuth;
+    FirebaseStorage firebaseStorage;
+    StorageReference storageReference;
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data.getData() != null) {
+            imagePath = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imagePath);
+                profileImageView.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
 
     @Override
@@ -49,6 +82,8 @@ public class EditProfile extends AppCompatActivity {
         t3=(EditText)findViewById(R.id.editText6);
         t4=(EditText)findViewById(R.id.editText7);
         uid=user.getUid();
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference();
         ref = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -98,14 +133,51 @@ public class EditProfile extends AppCompatActivity {
                 User_information user1=new User_information(name2,phone2,hostel2,department2,email);
 
                 ref.setValue(user1);
+                if(imagePath!=null)
+                    sendUserData(uid);
 
                 Toast.makeText(EditProfile.this, "Your changes are saved",
                         Toast.LENGTH_SHORT).show();
             }
         });
 
+<<<<<<< HEAD
 
     }
 
 
+=======
+        profileImageView = findViewById(R.id.picture);
+
+        profileImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent profileIntent = new Intent();
+                profileIntent.setType("image/*");
+                profileIntent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(profileIntent, "Select Image."), PICK_IMAGE);
+            }
+        });
+    }
+
+    private void sendUserData(String uid) {
+        // Get "User UID" from Firebase > Authentification > Users.
+
+        // DatabaseReference databaseReference = firebaseDatabase.getReference(Objects.requireNonNull(firebaseAuth.getUid()));
+        StorageReference imageReference = storageReference.child(uid).child("Images").child("ProfilePicture.jpg"); //User id/Images/Profile Pic.jpg
+        UploadTask uploadTask = imageReference.putFile(imagePath);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(EditProfile.this, "Error: Uploading profile picture", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(EditProfile.this, "Profile picture uploaded", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+>>>>>>> 00d45d7a66cd3b4cab006ebf9365da29b4ffc352
 }

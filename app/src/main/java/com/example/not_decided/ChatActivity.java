@@ -95,6 +95,11 @@ public class ChatActivity extends AppCompatActivity implements Message_Dialog.Me
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.child(email.replace('.','-')).exists()) {
+                    Toast.makeText(ChatActivity.this, "Invalid Email",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 String receiver = dataSnapshot.child(email.replace('.','-')).getValue().toString();
                 writeMessage(sender, receiver, message, date);
             }
