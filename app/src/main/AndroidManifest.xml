@@ -17,6 +17,7 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".DevelopersPage"></activity>
         <activity android:name=".MapsActivity" />
         <activity android:name=".NearbyTrips" />
         <activity android:name=".UpcomingTrips" />

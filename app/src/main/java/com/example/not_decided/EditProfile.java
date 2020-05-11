@@ -7,10 +7,8 @@ import androidx.appcompat.view.ActionMode;
 
 import android.content.ContentResolver;
 import android.content.Intent;
-<<<<<<< HEAD
-=======
 import android.graphics.Bitmap;
->>>>>>> 00d45d7a66cd3b4cab006ebf9365da29b4ffc352
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -32,15 +30,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-<<<<<<< HEAD
+
 
 import java.io.File;
-=======
+
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.util.Objects;
->>>>>>> 00d45d7a66cd3b4cab006ebf9365da29b4ffc352
 
 public class EditProfile extends AppCompatActivity {
     DatabaseReference ref;
@@ -141,12 +138,8 @@ public class EditProfile extends AppCompatActivity {
             }
         });
 
-<<<<<<< HEAD
-
-    }
 
 
-=======
         profileImageView = findViewById(R.id.picture);
 
         profileImageView.setOnClickListener(new View.OnClickListener() {
@@ -179,5 +172,4 @@ public class EditProfile extends AppCompatActivity {
         });
     }
 
->>>>>>> 00d45d7a66cd3b4cab006ebf9365da29b4ffc352
 }

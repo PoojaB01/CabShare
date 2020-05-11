@@ -79,11 +79,11 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        Button maps = (Button) findViewById(R.id.maps);
-        maps.setOnClickListener(new View.OnClickListener() {
+        Button developer_page = (Button) findViewById(R.id.developerspage);
+        developer_page.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(HomeActivity.this, MapsActivity.class));
+                startActivity(new Intent(HomeActivity.this, DevelopersPage.class));
             }
         });
 
