@@ -107,9 +107,11 @@ private String s1,s2,s3,s4,s5,s6,s7;
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot tripSnapshot: dataSnapshot.getChildren()) {
                     String input1 = tripSnapshot.getValue(Trip_information.class).getSource().toLowerCase();
-                    boolean isFound1 = input1.indexOf(searchSource.toLowerCase()) !=-1? true: false;
+                 //   boolean isFound1 = input1.indexOf(searchSource.toLowerCase()) !=-1? true: false;
+                    boolean isFound1=isSubSequence(searchSource,input1,searchSource.length(),input1.length());
                     String input2 = tripSnapshot.getValue(Trip_information.class).getDestination().toLowerCase();
-                    boolean isFound2 = input2.indexOf(searchDestination.toLowerCase()) !=-1? true: false;
+                   // boolean isFound2 = input2.indexOf(searchDestination.toLowerCase()) !=-1? true: false;
+                    boolean isFound2=isSubSequence(searchDestination,input2,searchDestination.length(),input2.length());
                     String input3 = tripSnapshot.getValue(Trip_information.class).getDate();
 
                     String input4= tripSnapshot.getValue(Trip_information.class).getTime();
@@ -228,8 +230,23 @@ private String s1,s2,s3,s4,s5,s6,s7;
         s5=String.valueOf(month);
         s6=String.valueOf(dayOfMonth);
         flag1=true;
+        int x=Integer.parseInt(s5);
+        x=x+1;
+        s5=String.valueOf(x);
         s7=s6+"/"+s5+"/"+s4;
         date.setText(currentDateString);
+    }
+    static boolean isSubSequence(String str1, String str2, int m, int n)
+    {
+        if (m == 0)
+            return true;
+        if (n == 0)
+            return false;
+
+        if (str1.charAt(m-1) == str2.charAt(n-1))
+            return isSubSequence(str1, str2, m-1, n-1);
+
+        return isSubSequence(str1, str2, m, n-1);
     }
 
 }

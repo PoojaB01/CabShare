@@ -169,6 +169,9 @@ public class FormAct extends AppCompatActivity implements TimePickerDialog.OnTim
         s4=String.valueOf(year);
         s5=String.valueOf(month);
         s6=String.valueOf(dayOfMonth);
+        int x=Integer.parseInt(s5);
+        x=x+1;
+        s5=String.valueOf(x);
         s7=s6+"/"+s5+"/"+s4;
         textView.setText(currentDateString);
     }

@@ -1,7 +1,10 @@
 package com.example.not_decided;
 
+import android.widget.ImageView;
+
 public class User_information {
     String name, phone, hostel, department, email;
+
     public User_information(String name, String phone, String hostel, String department, String email)
     {
         this.name = name;
@@ -9,6 +12,7 @@ public class User_information {
         this.hostel = hostel;
         this.department = department;
         this.email = email;
+
     }
     public String getName(){
         return this.name;
@@ -25,4 +29,5 @@ public class User_information {
     public String getEmail() {
         return this.email;
     }
+
 }

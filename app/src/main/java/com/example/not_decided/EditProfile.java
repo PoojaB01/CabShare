@@ -1,13 +1,19 @@
 package com.example.not_decided;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ActionMode;
 
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,6 +23,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
 
 public class EditProfile extends AppCompatActivity {
     DatabaseReference ref;
@@ -24,7 +34,9 @@ public class EditProfile extends AppCompatActivity {
     String name1,hostel1,phone1,department1,email;
     String uid;
     String name2,hostel2,department2,phone2;
+
     EditText t1,t2,t3,t4;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,5 +104,8 @@ public class EditProfile extends AppCompatActivity {
             }
         });
 
+
     }
+
+
 }
