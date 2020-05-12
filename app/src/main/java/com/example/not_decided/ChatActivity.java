@@ -148,11 +148,11 @@ public class ChatActivity extends AppCompatActivity implements Message_Dialog.Me
             public void onBtnClick(int position) {
                 Message message = messageList.get(position);
                 Message_reply dialog;
-                if(sender.equals(message.getSenderName())) {
-                    dialog = new Message_reply(message.getReceiverName(), message);
+                if(sender.matches(message.getSender())) {
+                    dialog = new Message_reply(message.getReceiver(), message);
                 }
                 else {
-                    dialog = new Message_reply(message.getSenderName(), message);
+                    dialog = new Message_reply(message.getSender(), message);
                 }
                 dialog.show(getSupportFragmentManager(), "message");
             }
