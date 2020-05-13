@@ -22,6 +22,7 @@ public class Message_reply extends AppCompatDialogFragment {
     private TextView email;
     String receiver;
     Message message1;
+    String name;
     private Message_replyListener listener;
 
 
@@ -52,7 +53,7 @@ public class Message_reply extends AppCompatDialogFragment {
                         Message NewMessage;
                         final Date date;
                         date = new Date();
-                        if(receiver.equals(message1.getReceiverName()))
+                        if(receiver.equals(message1.getReceiver()))
                         {
                             NewMessage = new Message(message1.getSender(),message1.getReceiver(), Message, date.toString(), message1.getSenderName(), message1.getReceiverName());
                         }
@@ -66,7 +67,10 @@ public class Message_reply extends AppCompatDialogFragment {
 
         email = view.findViewById(R.id.email);
         message = view.findViewById(R.id.message);
-        email.setText("to : "+ receiver);
+        if(receiver.equals(message1.getReceiver())) {
+            email.setText("to : " + message1.getReceiverName());
+        }
+        else email.setText("to : " + message1.getSenderName());
         return builder.create();
 
     }
