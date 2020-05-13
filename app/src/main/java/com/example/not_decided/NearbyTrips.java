@@ -30,6 +30,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 import static com.example.not_decided.R.layout.list_layout;
 
@@ -107,54 +110,48 @@ private String s1,s2,s3,s4,s5,s6,s7;
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot tripSnapshot: dataSnapshot.getChildren()) {
                     String input1 = tripSnapshot.getValue(Trip_information.class).getSource().toLowerCase();
-                 //   boolean isFound1 = input1.indexOf(searchSource.toLowerCase()) !=-1? true: false;
-                    boolean isFound1=isSubSequence(searchSource,input1,searchSource.length(),input1.length());
+                    //   boolean isFound1 = input1.indexOf(searchSource.toLowerCase()) !=-1? true: false;
+                    boolean isFound1 = isSubSequence(searchSource, input1, searchSource.length(), input1.length());
                     String input2 = tripSnapshot.getValue(Trip_information.class).getDestination().toLowerCase();
-                   // boolean isFound2 = input2.indexOf(searchDestination.toLowerCase()) !=-1? true: false;
-                    boolean isFound2=isSubSequence(searchDestination,input2,searchDestination.length(),input2.length());
+                    // boolean isFound2 = input2.indexOf(searchDestination.toLowerCase()) !=-1? true: false;
+                    boolean isFound2 = isSubSequence(searchDestination, input2, searchDestination.length(), input2.length());
                     String input3 = tripSnapshot.getValue(Trip_information.class).getDate();
 
-                    String input4= tripSnapshot.getValue(Trip_information.class).getTime();
-                    boolean isFound4=flag;
-                    if(isFound4 && flag1) {
-                        String x=input4.substring(0,2);
-                        int y=Integer.parseInt(x);
-                        String z1=s3.substring(0,2);
-                        int z=Integer.parseInt(z1);
+                    String input4 = tripSnapshot.getValue(Trip_information.class).getTime();
+                    boolean isFound4 = flag;
+                    if (isFound4 && flag1) {
+                        String x = input4.substring(0, 2);
+                        int y = Integer.parseInt(x);
+                        String z1 = s3.substring(0, 2);
+                        int z = Integer.parseInt(z1);
                         boolean isFound3 = input3.equals(s7);
-                        if (isFound1 && isFound2 && isFound3 && (y == z || y == z - 1 || y == z + 1 || y == z + 2 || y == z - 2 )) {
+                        if (isFound1 && isFound2 && isFound3 && (y == z || y == z - 1 || y == z + 1 || y == z + 2 || y == z - 2)) {
                             Trip_information trip = tripSnapshot.getValue(Trip_information.class);
                             triplist.add(trip);
                         }
-                    }
-                    else if(!isFound4 && flag1)
-                    {
+                    } else if (!isFound4 && flag1) {
                         boolean isFound3 = input3.equals(s7);
-                        if (isFound1 && isFound2 && isFound3 ) {
-                        Trip_information trip = tripSnapshot.getValue(Trip_information.class);
-                        triplist.add(trip);
-                        }
-                    }
-                    else if(isFound4 && !flag1)
-                    {
-                        String x=input4.substring(0,2);
-                        int y=Integer.parseInt(x);
-                        String z1=s3.substring(0,2);
-                        int z=Integer.parseInt(z1);
-                        if (isFound1 && isFound2 && (y == z || y == z - 1 || y == z + 1 || y == z + 2 || y == z - 2 )) {
+                        if (isFound1 && isFound2 && isFound3) {
                             Trip_information trip = tripSnapshot.getValue(Trip_information.class);
                             triplist.add(trip);
                         }
-                    }
-                    else
-                    {
+                    } else if (isFound4 && !flag1) {
+                        String x = input4.substring(0, 2);
+                        int y = Integer.parseInt(x);
+                        String z1 = s3.substring(0, 2);
+                        int z = Integer.parseInt(z1);
+                        if (isFound1 && isFound2 && (y == z || y == z - 1 || y == z + 1 || y == z + 2 || y == z - 2)) {
+                            Trip_information trip = tripSnapshot.getValue(Trip_information.class);
+                            triplist.add(trip);
+                        }
+                    } else {
                         if (isFound1 && isFound2) {
                             Trip_information trip = tripSnapshot.getValue(Trip_information.class);
                             triplist.add(trip);
                         }
                     }
                 }
-                makeView(triplist);
+
             }
 
             @Override
@@ -192,6 +189,22 @@ private String s1,s2,s3,s4,s5,s6,s7;
                 });
             }
         };
+        Button clear1=(Button)findViewById(R.id.clear_search);
+        clear1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                source.setText("");
+                destination.setText("");
+                time.setText("Enter Time");
+                date.setText("Enter Date");
+                s3="";
+                s7="";
+                flag=false;
+                flag1=false;
+                firebaseTripSearch("","");
+                triplist.clear();
+            }
+        });
         mAdapter = new TripAdapter(triplist, listener);
         result.setLayoutManager(mLayoutManager);
         result.setAdapter(mAdapter);
@@ -238,6 +251,8 @@ private String s1,s2,s3,s4,s5,s6,s7;
     }
     static boolean isSubSequence(String str1, String str2, int m, int n)
     {
+        str1=str1.toLowerCase();
+        str2=str2.toLowerCase();
         if (m == 0)
             return true;
         if (n == 0)
@@ -248,5 +263,6 @@ private String s1,s2,s3,s4,s5,s6,s7;
 
         return isSubSequence(str1, str2, m, n-1);
     }
+
 
 }

@@ -51,12 +51,12 @@ import java.util.Calendar;
 import java.util.List;
 
 public class FormAct extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener{
-    private Button b1;
+    private Button trip_add;
     private EditText source,destination;
     private DatabaseReference d1;
     private DatabaseReference d2,d3;
     private String text,s1,s2,s3,s4,s5,s6,s7,email1,phone1,name1;
-    private Button b2,b3,b4;
+    private Button time_choose,date_choose,home_button;
     FirebaseUser user;
     DatabaseReference ref;
     private String uid;
@@ -73,23 +73,23 @@ public class FormAct extends AppCompatActivity implements TimePickerDialog.OnTim
         //date=(EditText)findViewById(R.id.e3);
         //time=(EditText)findViewById(R.id.e4);
 
-        b1=(Button)findViewById(R.id.button4);
-        b2=(Button)findViewById(R.id.button3) ;
-        b3=(Button)findViewById(R.id.button5);
-        b4=(Button)findViewById(R.id.button11);
+        trip_add=(Button)findViewById(R.id.addtrip);
+        time_choose=(Button)findViewById(R.id.choosetime) ;
+        date_choose=(Button)findViewById(R.id.choosedate);
+        home_button=(Button)findViewById(R.id.home);
         onclick();
     }
 
 
     void onclick(){
 
-        b4.setOnClickListener(new View.OnClickListener() {
+        home_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(FormAct.this, HomeActivity.class));
             }
         });
-        b1.setOnClickListener(new View.OnClickListener() {
+        trip_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -130,14 +130,14 @@ public class FormAct extends AppCompatActivity implements TimePickerDialog.OnTim
                 }
             }
         });
-        b2.setOnClickListener(new View.OnClickListener() {
+        time_choose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogFragment timePicker = new TimePickerFragment();
                 timePicker.show(getSupportFragmentManager(), "time picker");
             }
         });
-        b3.setOnClickListener(new View.OnClickListener() {
+        date_choose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogFragment datePicker = new DatePickerFragment();
@@ -148,13 +148,17 @@ public class FormAct extends AppCompatActivity implements TimePickerDialog.OnTim
     };
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        TextView textView = (TextView) findViewById(R.id.textView4);
-        textView.setText("Hour: " + hourOfDay + " Minute: " + minute);
+        TextView time_show = (TextView) findViewById(R.id.showtime);
+        time_show.setText("Hour: " + hourOfDay + " Minute: " + minute);
          s1=String.valueOf(hourOfDay);
          s2=String.valueOf(minute);
          if(s1.length()==1)
          {
              s1="0"+s1;
+         }
+         if(s2.length()==1)
+         {
+             s2="0"+s2;
          }
          s3=s1+":"+s2;
     }
@@ -165,15 +169,23 @@ public class FormAct extends AppCompatActivity implements TimePickerDialog.OnTim
         c.set(Calendar.MONTH, month);
         c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         String currentDateString = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
-        TextView textView = (TextView) findViewById(R.id.textView5);
+        TextView date_show = (TextView) findViewById(R.id.showdate);
         s4=String.valueOf(year);
         s5=String.valueOf(month);
         s6=String.valueOf(dayOfMonth);
         int x=Integer.parseInt(s5);
         x=x+1;
         s5=String.valueOf(x);
+        if(s5.length()==1)
+        {
+            s5="0"+s5;
+        }
+        if(s6.length()==1)
+        {
+            s6="0"+s6;
+        }
         s7=s6+"/"+s5+"/"+s4;
-        textView.setText(currentDateString);
+        date_show.setText(currentDateString);
     }
    /* @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
