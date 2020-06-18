@@ -39,34 +39,34 @@ public class UpcomingTrips extends AppCompatActivity implements Message_reply.Me
                         Trip_information trip = tripSnapshot.getValue(Trip_information.class);
                         triplist.add(trip);
                     }
-                    Collections.sort(triplist, new Comparator<Trip_information>() {
-                        @Override
-                        public int compare(Trip_information o1, Trip_information o2) {
-                            String s1=o1.getDate();
-                            String s2=o2.getDate();
-                            String a1,a2,b1,b2,c1,c2;
-                            a1=s1.substring(6,10);
-                            b1=s1.substring(3,5);
-                            c1=s1.substring(0,2);
-                            a2=s2.substring(6,10);
-                            b2=s2.substring(3,5);
-                            c2=s2.substring(0,2);
-                            String s3=a1+b1+c1;
-                            String s4=a2+b2+c2;
-                            int x1=Integer.parseInt(s3);
-                            int y1=Integer.parseInt(s4);
-
-                            if(x1>y1)
-                            {
-                                return 0;
-                            }
-                            else
-                            {
-                                return 1;
-                            }
-
-                        }
-                    });
+//                    Collections.sort(triplist, new Comparator<Trip_information>() {
+//                        @Override
+//                        public int compare(Trip_information o1, Trip_information o2) {
+//                            String s1=o1.getDate();
+//                            String s2=o2.getDate();
+//                            String a1,a2,b1,b2,c1,c2;
+//                            a1=s1.substring(6,10);
+//                            b1=s1.substring(3,5);
+//                            c1=s1.substring(0,2);
+//                            a2=s2.substring(6,10);
+//                            b2=s2.substring(3,5);
+//                            c2=s2.substring(0,2);
+//                            String s3=a1+b1+c1;
+//                            String s4=a2+b2+c2;
+//                            int x1=Integer.parseInt(s3);
+//                            int y1=Integer.parseInt(s4);
+//
+//                            if(x1>y1)
+//                            {
+//                                return 0;
+//                            }
+//                            else
+//                            {
+//                                return 1;
+//                            }
+//
+//                        }
+//                    });
                     makeView(triplist);
                 }
                 @Override
