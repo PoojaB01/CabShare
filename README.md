@@ -17,3 +17,18 @@ The project intended to fecilitate the process of finding people to share a cab 
 ### TO-DO
 * Outlook Authentication
 * Deletion and Modification of Trip Details
+
+### Screens
+
+Login
+<p>
+<img src = "images/login.jpg">
+</p>
+
+Add Trip
+
+Search Trip
+
+Messaging
+
+Profile
