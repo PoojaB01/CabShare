@@ -22,13 +22,28 @@ The project intended to fecilitate the process of finding people to share a cab 
 
 Login
 <p>
-<img src = "images/login.jpg">
+<img src = "images/login.jpg" width=200>
 </p>
 
 Add Trip
+<p>
+<img src = "images/add_trip.jpg" width=200>
+</p>
 
 Search Trip
+<p>
+<img src = "images/search_trip.jpg" width=200>
+</p>
 
 Messaging
+<p>
+<img src = "images/message_dialog.jpg" width=200>
+</p>
+<p>
+<img src = "images/messages.jpg" width=200>
+</p>
 
 Profile
+<p>
+<img src = "images/profile.jpg" width=200>
+</p>
